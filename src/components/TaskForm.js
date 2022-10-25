@@ -1,9 +1,9 @@
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask, editTask } from '../features/tasks/taskSlice'
 import { v4 as uuid } from 'uuid'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Form, Button, Card, FloatingLabel } from 'react-bootstrap';
 
@@ -35,12 +35,10 @@ function TaskForm() {
         }
         navigate('/')
     }
-
-    useEffect(() => {
-        if (id) {
-            setTask(tasks.find(task => task.id === id))
-        }
-    }, [])
+    if (id) {
+        return setTask(tasks.find(task => task.id === id))
+    }
+    
 
     return (
         <div className='taskForm'>

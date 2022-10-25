@@ -43,10 +43,25 @@ export const taskSlice = createSlice({
                 state.splice(state.indexOf(taskFound), 1)
             }
         },
-       
+        searchTask: (state, action) => {
+            console.log(action)
+            // let tempState = action.payload.tasks
+
+            if (!action.payload.val) {
+                return state;
+            }
+
+            const response = state.filter((task) => {
+                const taskName = task.title.toLowerCase()
+                return taskName.includes(action.payload.val)
+            })
+
+            return response
+        }
+
     }
 })
 
 
-export const { addTask, editTask, deleteTask } = taskSlice.actions
+export const { addTask, editTask, deleteTask, searchTask } = taskSlice.actions
 export default taskSlice.reducer

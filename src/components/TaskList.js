@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { deleteTask } from '../features/tasks/taskSlice'
 
+
 //Components
-import { Container, Form, Card, Navbar, NavDropdown, Offcanvas, Nav, Button, Stack } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import NavBar from './navbar/navbar';
+import NoTask from './notask/notask'
 
 //Bootstrap Icons
 import { FiEdit3 } from 'react-icons/fi';
@@ -16,22 +17,26 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import './tasks.css'
 function TaskList() {
     // const [searched, setSearched] = useState(false)
-    const tasks = useSelector(state => state.tasks)
-    const searr = useSelector(state => state.search)
+
+    let tasks;
+    const searr = useSelector(state => state.search.wordToSearch)
+    //estado de la barra en este momento
+    tasks = useSelector(state =>
+        (searr) ? state.tasks.filter((task) => task.title.toLowerCase().includes(searr)) : state.tasks
+    )
+
     const dispatch = useDispatch()
     const handleDelete = (id) => {
         dispatch(deleteTask(id))
     }
-    
-    
+
     return (
         <div className='taskList'>
             <NavBar />
             <h1 className='text-white'>Your Tasks</h1>
             <div className='container-tasks'>
                 <div className='tasks'>
-
-                    {
+                    {tasks.length !== 0 &&
                         tasks.map((task, index) => {
                             return (
                                 <Card className='task' key={index} style={{ width: '18rem' }} bg='dark' text='light'>
@@ -54,6 +59,9 @@ function TaskList() {
                                 </Card>
                             )
                         })
+                    }
+                    {tasks.length === 0 &&
+                        <NoTask word={searr} />
                     }
 
                 </div>

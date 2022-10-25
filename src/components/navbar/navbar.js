@@ -1,30 +1,38 @@
 import { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Container, Navbar, Offcanvas, Nav, Form, Button } from 'react-bootstrap';
 
-import { useNavigate } from 'react-router-dom'
+import { changeToState } from '../../features/searchs/searchSlice'
+// import { changeToState } from '../../features/tasks/taskSlice'
+import { useDispatch } from 'react-redux'
+// import { useNavigate } from 'react-router-dom'
 
 export default function NavBar() {
     const [word, setWord] = useState('')
 
-    const navigate = useNavigate()
-    const searr = useSelector(state => state.search)
-    const handleSubmit = (e) => {
+    // const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const handleChange = (e) => {
         e.preventDefault()
-        console.log(searr)
-        console.log(word)
+        setWord(e.target.value)
+        // tasks = useSelector(state => state.tasks.filter((task) => task.title === "Task 1"));
+        // tasks = dispatch(searchTask({ val: e.target.value, tasks: tasks }))
         // navigate('/result')
     }
-    useEffect(() => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
 
+
+    useEffect(() => {
+        (word) ? dispatch(changeToState({ val: true, word: word })) : dispatch(changeToState({ val: false, word: word }))
     }, [word])
 
     return (
         <Navbar bg="dark" expand='sm' variant='dark' className="mb-3 text-white">
             <Container fluid>
-                <Navbar.Brand href="#">Tasks App</Navbar.Brand>
+                <Navbar.Brand><Link to='/'>Tasks App</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
                 <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand-lg`}
@@ -51,10 +59,9 @@ export default function NavBar() {
                                 className="me-2"
                                 aria-label="Search"
                                 name='taskToSearch'
-                                onChange={(e) => setWord(e.target.value)}
-                                value={word}
+                                onChange={(e) => handleChange(e)}
                             />
-                            <Button variant="outline-success" type="submit">Search</Button>
+                            <Button variant="outline-success" type='submit'>Search</Button>
                         </Form>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

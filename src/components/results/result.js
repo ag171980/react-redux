@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import NavBar from '../navbar/navbar';
 
 import './result.css'
