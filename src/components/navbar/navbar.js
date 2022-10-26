@@ -15,7 +15,10 @@ export default function NavBar() {
     const dispatch = useDispatch()
     const handleChange = (e) => {
         e.preventDefault()
-        setWord(e.target.value)
+        console.log(e.target.checked)
+        if (e.target.checked === undefined) {
+            setWord(e.target.value)
+        }
         // tasks = useSelector(state => state.tasks.filter((task) => task.title === "Task 1"));
         // tasks = dispatch(searchTask({ val: e.target.value, tasks: tasks }))
         // navigate('/result')
@@ -24,7 +27,9 @@ export default function NavBar() {
         e.preventDefault()
     }
 
-
+    const handleClick = (e) => {
+        console.log("a")
+    }
     useEffect(() => {
         (word) ? dispatch(changeToState({ val: true, word: word })) : dispatch(changeToState({ val: false, word: word }))
     }, [word])
@@ -48,6 +53,11 @@ export default function NavBar() {
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
+                        <Form.Check
+                            type="switch"
+                            id="custom-switch"
+                            onChange={(e) => handleChange(e)}
+                        />
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Link className='link-navbar' to='/'>Tasks</Link>
                             <Link className='link-navbar' to='/create-task'>Create</Link>
@@ -56,12 +66,11 @@ export default function NavBar() {
                             <Form.Control
                                 type="search"
                                 placeholder="Search"
-                                className="me-2"
+                                className=""
                                 aria-label="Search"
                                 name='taskToSearch'
                                 onChange={(e) => handleChange(e)}
                             />
-                            <Button variant="outline-success" type='submit'>Search</Button>
                         </Form>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

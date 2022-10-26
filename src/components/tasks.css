@@ -39,6 +39,10 @@
     margin: 0 auto;
 }
 
+.no-completed {
+    color: red;
+}
+
 @media (max-width:768px) {
 
     .container-form {

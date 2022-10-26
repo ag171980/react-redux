@@ -1,27 +1,38 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTask, editTask } from '../features/tasks/taskSlice'
 import { v4 as uuid } from 'uuid'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Form, Button, Card, FloatingLabel } from 'react-bootstrap';
+import { Form, Button, Card, FloatingLabel, InputGroup } from 'react-bootstrap';
 
 import NavBar from './navbar/navbar';
 function TaskForm() {
     let { id } = useParams()
     const [task, setTask] = useState({
         title: '',
-        description: ''
+        description: '',
+        completed: false,
     })
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const tasks = useSelector(state => state.tasks)
     const handleChange = e => {
-        setTask({
-            ...task,
-            [e.target.name]: e.target.value
-        })
+        console.log(e.target.value)
+        if (e.target.name === "completed") {
+            setTask({
+                ...task,
+                [e.target.name]: e.target.checked
+            })
+        } else {
+            setTask({
+                ...task,
+                [e.target.name]: e.target.value
+            })
+        }
+
     }
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -35,10 +46,13 @@ function TaskForm() {
         }
         navigate('/')
     }
-    if (id) {
-        return setTask(tasks.find(task => task.id === id))
-    }
-    
+    useEffect(() => {
+        if (id) {
+            setTask(tasks.find(task => task.id === id))
+        }
+    }, [id])
+
+
 
     return (
         <div className='taskForm'>
@@ -68,7 +82,19 @@ function TaskForm() {
                             />
                         </FloatingLabel>
                     </Form.Group>
+                    <InputGroup className='mb-3'>
 
+                        <Form.Check
+                            inline
+                            name="completed"
+                            type='checkbox'
+                            id={`inline-checkbox-1`}
+                            onChange={handleChange}
+                            checked={task.completed}
+                        />
+
+                        <Form.Check.Label className='text-white mr-3'>Completed? {(task.completed) ? "Yes" : "No"}</Form.Check.Label>
+                    </InputGroup>
                     <Button variant="primary" type="submit">
                         Create Task
                     </Button>

@@ -39,3 +39,17 @@
     transform: rotate(360deg);
   }
 }
+
+@media (prefers-color-scheme: dark) {
+
+  body {
+      --color-bg: rgb(53,53,53);
+      --color-text: wheat;
+  }
+
+  body.light-theme {
+      --color-bg: #DDDDDD;
+      --color-text: #EE6352;
+  }
+  
+}
